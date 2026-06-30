@@ -26,4 +26,8 @@ def ws_handshake():
 
 @router.websocket(f"/")
 async def websocket_handler(websocket: WebSocket):
-    return
+    await websocket.accept()
+    call_sid = None
+    phone_number = None
+    history = []
+    is_processing = False
