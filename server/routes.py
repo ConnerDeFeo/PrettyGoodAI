@@ -7,12 +7,13 @@ from fastapi import APIRouter, WebSocket, Response
 from twilio.twiml.voice_response import VoiceResponse, Connect, ConversationRelay
 import json
 from config import *
+from websocket_handler import websocket_handler
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-@router.post(f"/handshake")
-def ws_handshake():
+@router.post(f"/twiml")
+def twiml():
     """Initialize Twilio voice connection with conversation relay settings."""
     response = VoiceResponse()
     connect = Connect()
@@ -31,6 +32,6 @@ def ws_handshake():
     return Response(content=str(response), media_type="application/xml")
 
 @router.websocket(f"/")
-async def websocket_handler(websocket: WebSocket):
+async def websocket_router(websocket: WebSocket):
     """Handle bidirectional WebSocket communication for voice conversations."""
     return await websocket_handler(websocket, logger)
