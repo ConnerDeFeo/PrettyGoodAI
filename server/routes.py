@@ -35,7 +35,6 @@ async def websocket_handler(websocket: WebSocket):
     """Handle bidirectional WebSocket communication for voice conversations."""
     await websocket.accept()
     call_sid = None
-    phone_number = None
     history = []  # Maintains conversation history for context in Bedrock API
     is_processing = False  # Prevents concurrent processing of multiple prompts
 
@@ -51,7 +50,6 @@ async def websocket_handler(websocket: WebSocket):
             if event == "setup":
                 # Extract call metadata from Twilio on connection initialization
                 call_sid = data.get("callSid")
-                phone_number = data.get("from")
 
             elif event == "prompt":
                 # Process user voice input and generate AI response
