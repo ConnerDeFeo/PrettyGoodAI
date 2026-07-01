@@ -9,7 +9,7 @@ account_sid = os.getenv("TWILIO_ACCOUNT_SID")
 auth_token = os.getenv("TWILIO_AUTH_TOKEN")
 from_number = os.getenv("TWILIO_PHONE_NUMBER")
 
-TARGET_NUMBER = "+18054398008"
+TARGET_NUMBER = "+13158797067"
 
 client = Client(account_sid, auth_token)
 
@@ -19,4 +19,4 @@ call = client.calls.create(
     url="https://pgai.connerdefeo.com/twiml"
 )
 
-print(f"Call initiated: {call.sid}")
+print(call.status, call.direction, call.to, call._from)

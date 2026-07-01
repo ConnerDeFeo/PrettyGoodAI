@@ -1,4 +1,5 @@
-from fastapi import WebSocket, Logger
+from fastapi import WebSocket
+from logging import Logger
 import json
 from dynamo import save_conversation_history
 from conversation import *
