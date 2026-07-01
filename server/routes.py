@@ -18,11 +18,7 @@ def ws_handshake():
     connect = Connect()
 
     # Configure conversation relay with voice parameters (TTS, greeting, language)
-    conversationrelay = ConversationRelay(
-        url="MOCK URL",
-        welcome_greeting="MOCK GREETING",
-        welcome_greeting_interruptible=False
-    )
+    conversationrelay = ConversationRelay(url=f"wss://{SERVER_DOMAIN}")
 
     # Set language and voice provider (ElevenLabs) for text-to-speech
     conversationrelay.language(
