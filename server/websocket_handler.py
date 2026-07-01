@@ -1,6 +1,7 @@
 from fastapi import WebSocket, Logger
 import json
 from config import *
+from dynamo import save_conversation_history
 
 async def websocket_handler(websocket: WebSocket, logger: Logger):
     await websocket.accept()
@@ -71,7 +72,8 @@ async def websocket_handler(websocket: WebSocket, logger: Logger):
     except Exception as e:
         logger.exception(f"Unhandled error in websocket_handler: {e}")
     finally:
-        # Clean up WebSocket connection on disconnect or error
+        # Clean up WebSocket connection on disconnect or error. Save conversation history
+        save_conversation_history(call_sid, history)
         try:
             await websocket.close()
         except RuntimeError:
