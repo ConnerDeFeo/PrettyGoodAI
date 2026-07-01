@@ -49,7 +49,7 @@ cd PrettyGoodAI/server
 pip3 install -r requirements.txt
 chown -R ec2-user:ec2-user /home/ec2-user/PrettyGoodAI
 
-# --- Your app's systemd service ---
+# --- Systemd service ---
 cat > /etc/systemd/system/pgai.service << 'EOF'
 [Unit]
 Description=PGAI FastAPI app
