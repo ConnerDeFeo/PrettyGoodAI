@@ -65,6 +65,12 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
+cat > /home/ec2-user/PrettyGoodAI/server/.env << 'EOF'
+TWILIO_ACCOUNT_SID=${twilio_account_sid}
+TWILIO_AUTH_TOKEN=${twilio_auth_token}
+TWILIO_PHONE_NUMBER=${twilio_phone_number}
+EOF
+
 # --- Start everything ---
 sudo systemctl daemon-reload
 sudo systemctl enable caddy
