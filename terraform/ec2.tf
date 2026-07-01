@@ -110,8 +110,9 @@ resource "aws_instance" "pgai_receptionist" {
   instance_type = "t3.small"
 
   vpc_security_group_ids = [aws_security_group.pgai_voice_bot_sg.id]
-
   iam_instance_profile = aws_iam_instance_profile.pgai_voice_bot_instance_profile.name
+
+  user_data = file("${path.module}/userdata.sh")
 
   tags = {
     Name = "pgai-voice-bot-server"
