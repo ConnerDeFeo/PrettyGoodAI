@@ -1,6 +1,5 @@
 from fastapi import WebSocket, Logger
 import json
-from config import *
 from dynamo import save_conversation_history
 from conversation import *
 
