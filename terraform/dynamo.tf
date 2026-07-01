@@ -10,10 +10,10 @@ resource "aws_dynamodb_table" "appointment_tables" {
   for_each = local.tables
   name         = each.value
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "customer_phone_number"
+  hash_key     = "call_sid"
 
   attribute {
-    name = "customer_phone_number"
+    name = "call_sid"
     type = "S"
   }
 
