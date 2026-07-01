@@ -2,6 +2,7 @@ from fastapi import WebSocket, Logger
 import json
 from config import *
 from dynamo import save_conversation_history
+from conversation import *
 
 async def websocket_handler(websocket: WebSocket, logger: Logger):
     await websocket.accept()
@@ -34,34 +35,9 @@ async def websocket_handler(websocket: WebSocket, logger: Logger):
                     # Add user message to conversation history
                     history.append({"role": "user", "content": [{"text": user_text}]})
 
-                    # Call AWS Bedrock API with streaming enabled for real-time token delivery
-                    response = bedrock.converse_stream(
-                        modelId=CONVERSATION_MODEL,
-                        messages=history,
-                        system=[{"text": SYSTEM_PROMPT}],
-                        inferenceConfig={"maxTokens": MAX_OUTPUT_TOKENS},
-                    )
-
-                    stream = response["stream"]
-                    assistant_text = ""
-
-                    # Stream tokens to client as they arrive from the model
-                    for chunk in stream:
-                        token = chunk.get("contentBlockDelta", {}).get("delta", {}).get("text", "")
-                        if token:
-                            assistant_text += token
-                            await websocket.send_text(json.dumps({
-                                "type": "text",
-                                "token": token,
-                                "last": False
-                            }))
-
-                    # Send completion signal to client
-                    await websocket.send_text(json.dumps({
-                        "type": "text",
-                        "token": "",
-                        "last": True
-                    }))
+                    # Get response from the AI
+                    stream = await send_message(history)
+                    assistant_text = await recieve_message(websocket, stream)
 
                     # Append complete assistant response to history for next turn
                     history.append({"role": "assistant", "content": [{"text": assistant_text}]})
